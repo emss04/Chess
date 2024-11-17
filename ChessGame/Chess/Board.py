@@ -18,10 +18,10 @@ class Board:
     #piece located there,
     #if none return None(null)
     def hasPiece(self, x, y):
-        if self.board[x][y] is None:
+        if self.board[y][x] is None:
             return None
         else:
-            return self.board[x][y]
+            return self.board[y][x]
    
     def reset(self):
         #Initializing/Resetting board to be able to access positions
@@ -34,18 +34,59 @@ class Board:
 
 
         #white side
-        self.board[0] = [Rook("white", 0, 0), Bishop("white", 1, 0), Knight("white", 2, 0),
-                        Queen("white", 3, 0), King("white", 4, 0), Knight("white", 5, 0),
-                        Bishop("white", 6, 0), Rook("white", 7, 0)]
+        self.board[0] = [Rook("white", 0, 0), Knight("white", 1, 0), Bishop("white", 2, 0), 
+                        Queen("white", 3, 0), King("white", 4, 0),Bishop("white", 5, 0),
+                        Knight("white", 6, 0), Rook("white", 7, 0)]
         #pawns
         for i in range(8):
             self.board[1][i] = Pawn("white", i, 1)  
-
+        self.board[4][4] = Knight("white", 4, 4)
 
         #black side
-        self.board[7] = [Rook("black", 0, 7), Bishop("black", 1, 7), Knight("black", 2, 7),
-         Queen("black", 3, 7), King("black", 4, 7), Knight("black", 5, 7),
-         Bishop("black", 6, 7), Rook("black", 7, 7)]
+        self.board[7] = [Rook("black", 0, 7),Knight("black", 1, 7), Bishop("black", 2, 7), 
+         Queen("black", 3, 7), King("black", 4, 7), Bishop("black", 5, 7),
+         Knight("black", 6, 7), Rook("black", 7, 7)]
         #pawns
         for i in range(8):
             self.board[6][i] = Pawn("black", i, 6)
+
+    def printBoard(self):
+        for i in range(7, -1, -1):
+            for j in range(8):
+                if isinstance(self.board[i][j], Pawn):
+                    if self.board[i][j].color == "white":
+                        print("wP", end=" ")
+                    else:
+                        print("bP", end=" ")
+                elif isinstance(self.board[i][j], Knight):
+                    if self.board[i][j].color == "white":
+                        print("wN", end=" ")
+                    else:
+                        print("bN", end=" ")
+                elif isinstance(self.board[i][j], Bishop):
+                    if self.board[i][j].color == "white":
+                        print("wB", end=" ")
+                    else:
+                        print("bB", end=" ")
+                elif isinstance(self.board[i][j], Rook):
+                    if self.board[i][j].color == "white":
+                        print("wR", end=" ")
+                    else:
+                        print("bR", end=" ")
+                elif isinstance(self.board[i][j], King):
+                    if self.board[i][j].color == "white":
+                        print("wK", end=" ")
+                    else:
+                        print("bK", end=" ")
+                elif isinstance(self.board[i][j], Queen):
+                    if self.board[i][j].color == "white":
+                        print("wQ", end=" ")
+                    else:
+                        print("bQ", end=" ")
+                else:
+                    print("  ", end=" ")
+            print(i)
+        print("0  1  2  3  4  5  6  7")
+    def printValids(self):
+        for i in range(0, len(self.validMoves)):
+            print(self.validMoves[i])
