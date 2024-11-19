@@ -13,7 +13,11 @@ class Board:
     def clearValid(self):
         self.validMoves.clear()
 
-
+    def withinValid(self, x, y):
+        for i in range(0, len(self.validMoves)):
+            if self.validMoves[i][0] == x and self.validMoves[i][1] == y:
+                return True
+        return False
     #checks if there is piece at x, y, if there is return
     #piece located there,
     #if none return None(null)
@@ -40,8 +44,7 @@ class Board:
         #pawns
         for i in range(8):
             self.board[1][i] = Pawn("white", i, 1)  
-        self.board[4][4] = Knight("white", 4, 4)
-
+            
         #black side
         self.board[7] = [Rook("black", 0, 7),Knight("black", 1, 7), Bishop("black", 2, 7), 
          Queen("black", 3, 7), King("black", 4, 7), Bishop("black", 5, 7),
