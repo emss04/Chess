@@ -14,13 +14,16 @@ class Controller:
         while (not self.endGame):
             self.curColor = "white"
             self.board.printBoard()
+            self.board.printThreats("white")
             self.promptInput()
             self.board.printBoard()
+            self.board.printThreats("black")
             self.curColor = "black"
             self.promptInput()
             quit = input("x to quit")
             if quit == "x":
                 break
+
 
     def promptInput(self):
         while (True):
@@ -47,8 +50,11 @@ class Controller:
 
         while (True):
             try:
-                target = input("Select target position with xy format: ")
-                if target.isdigit() and len(target) == 2:
+                target = input("Select target position with xy format(-1 to reselect): ")
+                if target == "-1":
+                    self.promptInput()
+                    break
+                elif target.isdigit() and len(target) == 2:
                     tarX = int(target[0])
                     tarY = int(target[1])
                     if 0 <= tarX <= 7 and 0 <= tarY <= 7:
@@ -59,6 +65,8 @@ class Controller:
                             if isinstance(self.board.hasPiece(selX, selY), (King, Pawn, Rook)):
                                 self.board.hasPiece(selX, selY).moved = True
                             self.board.board[tarY][tarX] = self.board.hasPiece(selX, selY)
+                            self.board.board[selY][selX].removeThreats(self.board, selX, selY)
+                            self.board.board[tarY][tarX].validMoves(self.board, tarX, tarY, True)
                             self.board.board[selY][selX] = None
                             
                             break
