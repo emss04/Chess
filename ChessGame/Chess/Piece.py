@@ -160,6 +160,8 @@ class Queen(Piece):
                 curMap = board.blackThreat
         #going right
         for i in range(1, 8 - x):
+            if not (0 <= x + i <= 7) or not (0 <= y <= 7):
+                break
             if updateThreat:
                 curMap[f"{x + i}{y}"][0] += 1
                 curMap[f"{x + i}{y}"].append(self)
@@ -169,13 +171,15 @@ class Queen(Piece):
                 if board.hasPiece(x + i, y).color == self.color:
                     break
                 else:
-                    board.addToValid(x + i, y).color == self.color
+                    board.addToValid(x + i, y)
                     break
             else:
                 board.addToValid(x + i, y)
 
         #going left
         for i in range(1, x + 1):
+            if not (0 <= x - i <= 7) or not (0 <= y <= 7):
+                break
             if updateThreat:
                 curMap[f"{x - i}{y}"][0] += 1
                 curMap[f"{x - i}{y}"].append(self)
@@ -185,13 +189,15 @@ class Queen(Piece):
                 if board.hasPiece(x - i, y).color == self.color:
                     break
                 else:
-                    board.addToValid(x - i, y).color == self.color
+                    board.addToValid(x - i, y)
                     break
             else:
                 board.addToValid(x - i, y)
 
         #going up
-        for i in range(1, y):
+        for i in range(1, 8 - y):
+            if not (0 <= x <= 7) or not (0 <= y + i <= 7):
+                break
             if updateThreat:
                 curMap[f"{x}{y + i}"][0] += 1
                 curMap[f"{x}{y + i}"].append(self)
@@ -207,7 +213,9 @@ class Queen(Piece):
                 board.addToValid(x, y + i)
 
         #going down
-        for i in range(1, 8 - y):
+        for i in range(1, y):
+            if not (0 <= x <= 7) or not (0 <= y - i <= 7):
+                break
             if updateThreat:
                 curMap[f"{x}{y - i}"][0] += 1
                 curMap[f"{x}{y - i}"].append(self)
@@ -223,12 +231,12 @@ class Queen(Piece):
                 board.addToValid(x, y - i)
 
         #going top right
-        for i in range(1, min(8 - x, 8 - y)):
+        for i in range(1, min(8 - x, 8 - y) + 1):
+            if not (0 <= x + i <= 7) or not (0 <= y + i <= 7):
+                break
             if updateThreat:
                 curMap[f"{x + i}{y + i}"][0] += 1
                 curMap[f"{x + i}{y + i}"].append(self)
-                if board.hasPiece(x + i, y + i):
-                    break
             elif board.hasPiece(x + i, y + i):
                 if board.hasPiece(x + i, y + i).color == self.color:
                     break
@@ -237,14 +245,16 @@ class Queen(Piece):
                     break
             else:
                 board.addToValid(x + i, y + i)
+
+
         #going top left
-        for i in range(1, min(x, 8 - y)):
+        for i in range(1, min(x, 8 - y)+1):
+            if not (0 <= x - i <= 7) or not (0 <= y + i <= 7):
+                break
             if updateThreat:
                 curMap[f"{x - i}{y + i}"][0] += 1
                 curMap[f"{x - i}{y + i}"].append(self)
-                if board.hasPiece(x - i, y + i):
-                    break
-            if board.hasPiece(x - i, y + i):
+            elif board.hasPiece(x - i, y + i):
                 if board.hasPiece(x - i, y + i).color == self.color:
                     break
                 else:
@@ -255,12 +265,12 @@ class Queen(Piece):
 
 
         #going bottom right
-        for i in range(1, min(8 - x, y)):
+        for i in range(1, min(8 - x, y) + 1):
+            if not (0 <= x + i <= 7) or not (0 <= y - i <= 7):
+                break
             if updateThreat:
                 curMap[f"{x + i}{y - i}"][0] += 1
                 curMap[f"{x + i}{y - i}"].append(self)
-                if board.hasPiece(x + i, y - i):
-                    break
             elif board.hasPiece(x + i, y - i):
                 if board.hasPiece(x + i, y - i).color == self.color:
                     break
@@ -272,12 +282,12 @@ class Queen(Piece):
 
 
         #going bottom left
-        for i in range(1, min(x, y)):
+        for i in range(1, min(x, y) + 1):
+            if not (0 <= x - i <= 7) or not (0 <= y - i <= 7):
+                break
             if updateThreat:
                 curMap[f"{x - i}{y - i}"][0] += 1
                 curMap[f"{x - i}{y - i}"].append(self)
-                if board.hasPiece(x - i, y - i):
-                    break
             elif board.hasPiece(x - i, y - i):
                 if board.hasPiece(x - i, y - i).color == self.color:
                     break
@@ -291,54 +301,74 @@ class Queen(Piece):
         if self.color == "white":
             curMap = board.whiteThreat
         else:
-            curMap = board.blackThreat               
+            curMap = board.blackThreat  
+
         #going right
         for i in range(1, 8 - x):
+            if not (0 <= x + i <= 7) or not (0 <= y <= 7):
+                break
             if self in curMap[f"{x + i}{y}"]:
                 curMap[f"{x + i}{y}"].remove(self)
                 curMap[f"{x + i}{y}"][0] -= 1
 
         #going left
         for i in range(1, x + 1):
+            if not (0 <= x - i <= 7) or not (0 <= y <= 7):
+                break
             if self in curMap[f"{x - i}{y}"]:
                 curMap[f"{x - i}{y}"].remove(self)
                 curMap[f"{x - i}{y}"][0] -= 1
 
         #going up
         for i in range(1, 8 - y):
+            if not (0 <= x <= 7) or not (0 <= y + i <= 7):
+                break
             if self in curMap[f"{x}{y + i}"]:
                 curMap[f"{x}{y + i}"].remove(self)
                 curMap[f"{x}{y + i}"][0] -= 1
 
         #going down
         for i in range(1, y + 1):
+            if not (0 <= x <= 7) or not (0 <= y - i <= 7):
+                break
             if self in curMap[f"{x}{y - i}"]:
                 curMap[f"{x}{y - i}"].remove(self)
                 curMap[f"{x}{y - i}"][0] -= 1
 
+
+
+
         #going top right
-        for i in range(1, min(8 - x, 8 - y)):
+        for i in range(1, min(8 - x, 8 - y) + 1):
+            if not (0 <= x + i <= 7) or not (0 <= y + i <= 7):
+                break
             if self in curMap[f"{x + i}{y + i}"]:
                 curMap[f"{x + i}{y + i}"].remove(self)
                 curMap[f"{x + i}{y + i}"][0] -= 1
 
 
         #going top left
-        for i in range(1, min(x, 8 - y)):
+        for i in range(1, min(x, 8 - y) + 1):
+            if not (0 <= x - i <= 7) or not (0 <= y + i <= 7):
+                break
             if self in curMap[f"{x - i}{y + i}"]:
                 curMap[f"{x - i}{y + i}"].remove(self)
                 curMap[f"{x - i}{y + i}"][0] -= 1
 
 
         #going bottom right
-        for i in range(1, min(8 - x, y)):
+        for i in range(1, min(8 - x, y) + 1):
+            if not (0 <= x + i <= 7) or not (0 <= y - i <= 7):
+                break
             if self in curMap[f"{x + i}{y - i}"]:
                 curMap[f"{x + i}{y - i}"].remove(self)
                 curMap[f"{x + i}{y - i}"][0] -= 1
 
 
         #going bottom left
-        for i in range(1, min(x, y)):
+        for i in range(1, min(x, y) + 1):
+            if not (0 <= x - i <= 7) or not (0 <= y - i <= 7):
+                break
             if self in curMap[f"{x - i}{y - i}"]:
                 curMap[f"{x - i}{y - i}"].remove(self)
                 curMap[f"{x - i}{y - i}"][0] -= 1
@@ -361,7 +391,11 @@ class Knight(Piece):
                 #short circuiting to avoid error
                 if board.hasPiece(newX, newY) == None or board.hasPiece(newX, newY).color != self.color:
                     board.addToValid(newX, newY)
-
+    def removeThreats(self, board, x, y):
+        if self.color == "white":
+            curMap = board.whiteThreat
+        else:
+            curMap = board.blackThreat          
 
 
 class Bishop(Piece):
@@ -380,59 +414,71 @@ class Bishop(Piece):
             else:
                 curMap = board.blackThreat
         #going top right
-        for i in range(1, min(8 - x, 8 - y)):
+        for i in range(1, min(8 - x, 8 - y) + 1):
+            if not (0 <= x + i <= 7) or not (0 <= y + i <= 7):
+                break
             if updateThreat:
                 curMap[f"{x + i}{y + i}"][0] += 1
                 curMap[f"{x + i}{y + i}"].append(self)
-            if board.hasPiece(x + i, y + i):
+            elif board.hasPiece(x + i, y + i):
                 if board.hasPiece(x + i, y + i).color == self.color:
                     break
                 else:
                     board.addToValid(x + i, y + i)
                     break
-            board.addToValid(x + i, y + i)
+            else:
+                board.addToValid(x + i, y + i)
 
 
         #going top left
-        for i in range(1, min(x, 8 - y)):
+        for i in range(1, min(x, 8 - y)+1):
+            if not (0 <= x - i <= 7) or not (0 <= y + i <= 7):
+                break
             if updateThreat:
                 curMap[f"{x - i}{y + i}"][0] += 1
                 curMap[f"{x - i}{y + i}"].append(self)
-            if board.hasPiece(x - i, y + i):
+            elif board.hasPiece(x - i, y + i):
                 if board.hasPiece(x - i, y + i).color == self.color:
                     break
                 else:
                     board.addToValid(x - i, y + i)
                     break
-            board.addToValid(x - i, y + i)
+            else:
+                board.addToValid(x - i, y + i)
 
 
         #going bottom right
-        for i in range(1, min(8 - x, y)):
+        for i in range(1, min(8 - x, y) + 1):
+            if not (0 <= x + i <= 7) or not (0 <= y - i <= 7):
+                break
             if updateThreat:
                 curMap[f"{x + i}{y - i}"][0] += 1
                 curMap[f"{x + i}{y - i}"].append(self)
-            if board.hasPiece(x + i, y - i):
+            elif board.hasPiece(x + i, y - i):
                 if board.hasPiece(x + i, y - i).color == self.color:
                     break
                 else:
                     board.addToValid(x + i, y - i)
                     break
-            board.addToValid(x + i, y - i)
+            else:
+                board.addToValid(x + i, y - i)
 
 
         #going bottom left
-        for i in range(1, min(x, y)):
+        for i in range(1, min(x, y) + 1):
+            if not (0 <= x - i <= 7) or not (0 <= y - i <= 7):
+                break
             if updateThreat:
                 curMap[f"{x - i}{y - i}"][0] += 1
                 curMap[f"{x - i}{y - i}"].append(self)
-            if board.hasPiece(x - i, y - i):
+            elif board.hasPiece(x - i, y - i):
                 if board.hasPiece(x - i, y - i).color == self.color:
                     break
                 else:
                     board.addToValid(x - i, y - i)
                     break
-            board.addToValid(x - i, y - i)
+            else:
+                board.addToValid(x - i, y - i)
     def removeThreats(self, board, x, y):
         if self.color == "white":
             curMap = board.whiteThreat
@@ -440,28 +486,36 @@ class Bishop(Piece):
             curMap = board.blackThreat               
 
         #going top right
-        for i in range(1, min(8 - x, 8 - y)):
+        for i in range(1, min(8 - x, 8 - y) + 1):
+            if not (0 <= x + i <= 7) or not (0 <= y + i <= 7):
+                break
             if self in curMap[f"{x + i}{y + i}"]:
                 curMap[f"{x + i}{y + i}"].remove(self)
                 curMap[f"{x + i}{y + i}"][0] -= 1
 
 
         #going top left
-        for i in range(1, min(x, 8 - y)):
+        for i in range(1, min(x, 8 - y) + 1):
+            if not (0 <= x - i <= 7) or not (0 <= y + i <= 7):
+                break
             if self in curMap[f"{x - i}{y + i}"]:
                 curMap[f"{x - i}{y + i}"].remove(self)
                 curMap[f"{x - i}{y + i}"][0] -= 1
 
 
         #going bottom right
-        for i in range(1, min(8 - x, y)):
+        for i in range(1, min(8 - x, y) + 1):
+            if not (0 <= x + i <= 7) or not (0 <= y - i <= 7):
+                break
             if self in curMap[f"{x + i}{y - i}"]:
                 curMap[f"{x + i}{y - i}"].remove(self)
                 curMap[f"{x + i}{y - i}"][0] -= 1
 
 
         #going bottom left
-        for i in range(1, min(x, y)):
+        for i in range(1, min(x, y) + 1):
+            if not (0 <= x - i <= 7) or not (0 <= y - i <= 7):
+                break
             if self in curMap[f"{x - i}{y - i}"]:
                 curMap[f"{x - i}{y - i}"].remove(self)
                 curMap[f"{x - i}{y - i}"][0] -= 1
@@ -482,55 +536,75 @@ class Rook(Piece):
                 curMap = board.blackThreat
         #going right
         for i in range(1, 8 - x):
+            if not (0 <= x + i <= 7) or not (0 <= y <= 7):
+                break
             if updateThreat:
                 curMap[f"{x + i}{y}"][0] += 1
                 curMap[f"{x + i}{y}"].append(self)
-            if board.hasPiece(x + i, y):
+                if board.hasPiece(x + i, y):
+                    break
+            elif board.hasPiece(x + i, y):
                 if board.hasPiece(x + i, y).color == self.color:
                     break
                 else:
-                    board.addToValid(x + i, y).color == self.color
+                    board.addToValid(x + i, y)
                     break
-            board.addToValid(x + i, y)
+            else:
+                board.addToValid(x + i, y)
 
         #going left
         for i in range(1, x + 1):
+            if not (0 <= x - i <= 7) or not (0 <= y <= 7):
+                break
             if updateThreat:
                 curMap[f"{x - i}{y}"][0] += 1
                 curMap[f"{x - i}{y}"].append(self)
-            if board.hasPiece(x - i, y):
+                if board.hasPiece(x - i, y):
+                    break
+            elif board.hasPiece(x - i, y):
                 if board.hasPiece(x - i, y).color == self.color:
                     break
                 else:
-                    board.addToValid(x - i, y).color == self.color
+                    board.addToValid(x - i, y)
                     break
-            board.addToValid(x - i, y)
+            else:
+                board.addToValid(x - i, y)
 
         #going up
-        for i in range(1, y):
+        for i in range(1, 8 - y):
+            if not (0 <= x <= 7) or not (0 <= y + i <= 7):
+                break
             if updateThreat:
                 curMap[f"{x}{y + i}"][0] += 1
                 curMap[f"{x}{y + i}"].append(self)
-            if board.hasPiece(x, y + i):
+                if board.hasPiece(x, y + i):
+                    break
+            elif board.hasPiece(x, y + i):
                 if board.hasPiece(x, y + i).color == self.color:
                     break
                 else:
                     board.addToValid(x, y + i)
                     break
-            board.addToValid(x, y + i)
+            else:
+                board.addToValid(x, y + i)
 
         #going down
-        for i in range(1, 8 - y):
+        for i in range(1, y):
+            if not (0 <= x <= 7) or not (0 <= y - i <= 7):
+                break
             if updateThreat:
                 curMap[f"{x}{y - i}"][0] += 1
                 curMap[f"{x}{y - i}"].append(self)
-            if board.hasPiece(x, y - i):
+                if board.hasPiece(x, y - i):
+                    break
+            elif board.hasPiece(x, y - i):
                 if board.hasPiece(x, y - i).color == self.color:
                     break
                 else:
                     board.addToValid(x, y - i)
                     break
-            board.addToValid(x, y - i)
+            else:
+                board.addToValid(x, y - i)
     def removeThreats(self, board, x, y):
         if self.color == "white":
             curMap = board.whiteThreat
@@ -538,24 +612,32 @@ class Rook(Piece):
             curMap = board.blackThreat               
         #going right
         for i in range(1, 8 - x):
+            if not (0 <= x + i <= 7) or not (0 <= y <= 7):
+                break
             if self in curMap[f"{x + i}{y}"]:
                 curMap[f"{x + i}{y}"].remove(self)
                 curMap[f"{x + i}{y}"][0] -= 1
 
         #going left
         for i in range(1, x + 1):
+            if not (0 <= x - i <= 7) or not (0 <= y <= 7):
+                break
             if self in curMap[f"{x - i}{y}"]:
                 curMap[f"{x - i}{y}"].remove(self)
                 curMap[f"{x - i}{y}"][0] -= 1
 
         #going up
         for i in range(1, 8 - y):
+            if not (0 <= x <= 7) or not (0 <= y + i <= 7):
+                break
             if self in curMap[f"{x}{y + i}"]:
                 curMap[f"{x}{y + i}"].remove(self)
                 curMap[f"{x}{y + i}"][0] -= 1
 
         #going down
         for i in range(1, y + 1):
+            if not (0 <= x <= 7) or not (0 <= y - i <= 7):
+                break
             if self in curMap[f"{x}{y - i}"]:
                 curMap[f"{x}{y - i}"].remove(self)
                 curMap[f"{x}{y - i}"][0] -= 1

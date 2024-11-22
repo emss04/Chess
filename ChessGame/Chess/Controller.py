@@ -14,16 +14,12 @@ class Controller:
         while (not self.endGame):
             self.curColor = "white"
             self.board.printBoard()
-            self.board.printThreats("white")
+            # self.board.printThreats("white")
             self.promptInput()
             self.board.printBoard()
-            self.board.printThreats("black")
+            # self.board.printThreats("black")
             self.curColor = "black"
             self.promptInput()
-            quit = input("x to quit")
-            if quit == "x":
-                break
-
 
     def promptInput(self):
         while (True):
